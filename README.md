@@ -33,3 +33,18 @@ My idea of “fun” maybe odd, but here it is. This is a demo that displays a c
 | PA1 | DATA | Resistor 2K2 to keyboard DATA and resistor 3K3 to GND
 | G | Ground | | VGA Ground (5,6,7,8,10)
 
+## Hardware
+
+| Hardware      |    Qty|
+| ------------- | -----:|
+| STM32F103 board | 1
+| VGA connector | 1
+| PS/2 Keyboard | 1
+| Power supply 5V DC for keyboard | 1
+| Resistors 470 Ohm | 3
+| Resistors 680 Ohm | 3
+| Resistors 2.2 KOhm | 2
+| Resistors 3.3 KOhm | 2
+| Breadboard | 1
+| Jumper wires | 18
+| ST-Link v2 or clone | 1
