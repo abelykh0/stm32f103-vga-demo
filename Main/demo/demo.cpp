@@ -42,8 +42,8 @@ namespace VgaDemo
 void VgaDemo::DemoSetup()
 {
     //random cube forever.
-    Vga::clear_screen(0x0C00);
-    Vga::printAt(5, 23, "Random Cube Rotation", 0x0C00);
+    Vga::clear_screen(0x3000);
+    Vga::printAt(5, 23, "Random Cube Rotation", 0x3000);
     srand(Vga::millis());
 }
 

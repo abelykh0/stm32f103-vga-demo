@@ -5,8 +5,8 @@
 #include "vga.h"
 #include "gamefont4x4.h"
 
-#define LABEL_COLOR 0x3F00
-#define SCORE_COLOR 0x0F00
+#define LABEL_COLOR 0xFF00
+#define SCORE_COLOR 0x3300
 
 static uint8_t statusArea[H_STEPS * V_STEPS];
 

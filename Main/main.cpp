@@ -13,7 +13,7 @@
 #include "game/Platform.h"
 
 static int previousDemo = -1;
-static int currentDemo = 1;
+static int currentDemo = 4;
 
 void showSinclairScreenshot(const char *screenshot);
 void ClearUsbBuffer();
@@ -155,7 +155,7 @@ void loop()
         if (demoInit)
         {
             Vga::hideCursor();
-            Vga::clear_screen(0x0C00);
+            Vga::clear_screen(0x3000);
 
             GameInit();
         }
