@@ -82,12 +82,12 @@ void loop()
     case 2:
         if (demoInit)
         {
-            Vga::clear_screen(0x3F10);
+            Vga::clear_screen(0xFF40);
 
             Vga::setCursorPosition(0, 17);
             for (uint8_t charCode = 32; charCode < 255; charCode++)
             {
-                Vga::print(charCode, 0x3F10);
+                Vga::print(charCode, 0xFF40);
             }
 
             Vga::setCursorPosition(0, 0);
