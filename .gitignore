@@ -1,4 +1,5 @@
-Debug/
+Debug/**
+Release/**
 
 # Prerequisites
 *.d
@@ -32,4 +33,3 @@ Debug/
 *.exe
 *.out
 *.app
-/Release/
