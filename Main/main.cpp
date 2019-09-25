@@ -1,5 +1,6 @@
 #include "startup.h"
 #include "vga.h"
+#include "Keyboard/ps2Keyboard.h"
 
 // Demo 1 : display ZX Spectrum screenshot
 #include "demo/bubblebobble.h"
@@ -16,8 +17,6 @@ static int previousDemo = -1;
 static int currentDemo = 4;
 
 void showSinclairScreenshot(const char *screenshot);
-void ClearUsbBuffer();
-extern uint8_t GetUsbBuffer(char *buffer, uint8_t maxLength);
 
 void initialize()
 {
@@ -37,43 +36,36 @@ void setup()
     Vga::BitmapMode = MODE_SINCLAIR;
     Vga::InitVga(Vga::timing_640x480_60hz);
     Vga::clear_screen(0x3F10);
+
+    // Initialize PS2 Keyboard
+    Ps2_Initialize();
 }
 
 void loop()
 {
     bool demoInit;
-    char buffer[32];
-    uint8_t len = GetUsbBuffer(buffer, 32);
-    if (len > 0)
+
+    int32_t scanCode = Ps2_GetScancode();
+    if (scanCode == 0)
     {
-        char buf[50];
-        for(int i = 0; i < len; i++)
-        {
-            sprintf(&buf[3 * i], "%02x ", buffer[i]);
-        }
-        CDC_Transmit_FS((uint8_t *)buf, 3 * len);
-
-        if (len == 5 && buffer[0] == '\x1B' && buffer[1] == '\x5B' && buffer[2] == '\x31' && buffer[4] == '\x7e')
-        {
-            switch (buffer[3])
-            {
-            case '\x31':
-                currentDemo = 1;
-                break;
-            case '\x32':
-                currentDemo = 2;
-                break;
-            case '\x33':
-                currentDemo = 3;
-                break;
-            case '\x34':
-                currentDemo = 4;
-                break;
-            }
-
-            len = 0;
-        }
+    	return;
     }
+
+	switch (scanCode)
+	{
+	case KEY_F1:
+		currentDemo = 1;
+		break;
+	case KEY_F2:
+		currentDemo = 2;
+		break;
+	case KEY_F3:
+		currentDemo = 3;
+		break;
+	case KEY_F4:
+		currentDemo = 4;
+		break;
+	}
 
     demoInit = (currentDemo != previousDemo);
     previousDemo = currentDemo;
@@ -103,6 +95,7 @@ void loop()
         }
         else
         {
+        	/*
             if (len == 1)
             {
                 Vga::print(buffer[0], 0x3F10);
@@ -138,6 +131,7 @@ void loop()
                     break;
                 }
             }
+            */
         }
         break;
     case 3:
@@ -164,20 +158,6 @@ void loop()
             GameUpdate();
         }
         break;
-    }
-
-    if (len > 0)
-    {
-        ClearUsbBuffer();
-    }
-}
-
-void ClearUsbBuffer()
-{
-    USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData;
-    if (hcdc->RxLength > 0)
-    {
-        hcdc->RxLength = 0;
     }
 }
 
