@@ -15,7 +15,7 @@ alt="VGA Demo on Bluepill" width="480" height="360" border="10" /></a>
 Video
 
 ## Introduction
-My idea of “fun” maybe odd, but here it is. This is a demo that displays a color VGA video with resolution of 256x192 and 64 colors without any specialized video hardware on a tiny STM32F103 microcontroller that can runs at 72 MHz and has only 20 KB of RAM.
+My idea of “fun” maybe odd, but here it is. This is a demo that displays a color VGA video with resolution of 256x192 and 64 colors without any specialized video hardware on a tiny STM32F103 microcontroller that has only 20 KB of RAM with CPU running at 72 MHz.
 
 ## How to connect wires
 
