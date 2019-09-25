@@ -1,5 +1,5 @@
 # VGA-demo-on-bluepill
-VGA demo on bluepill (using STM32F103 microcontroller)
+VGA demo on a STM32F103 board
 
 ## What it can do
 There are 4 demos:
