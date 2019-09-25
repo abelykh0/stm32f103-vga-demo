@@ -314,7 +314,7 @@ void Vga::InitVSync(
     sSlaveConfig.TriggerPolarity = TIM_TRIGGERPOLARITY_NONINVERTED;
     sSlaveConfig.TriggerPrescaler = TIM_TRIGGERPRESCALER_DIV1;
     sSlaveConfig.TriggerFilter = 0;
-    HAL_TIM_SlaveConfigSynchronization(&htim4, &sSlaveConfig);
+    HAL_TIM_SlaveConfigSynchro(&htim4, &sSlaveConfig);
 
     HAL_NVIC_SetPriority(TIM4_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(TIM4_IRQn);
@@ -405,7 +405,7 @@ void Vga::InitHSync(
     sSlaveConfig.TriggerPolarity = TIM_TRIGGERPOLARITY_NONINVERTED;
     sSlaveConfig.TriggerPrescaler = TIM_TRIGGERPRESCALER_DIV1;
     sSlaveConfig.TriggerFilter = 0;
-    HAL_TIM_SlaveConfigSynchronization(&htim3, &sSlaveConfig);
+    HAL_TIM_SlaveConfigSynchro(&htim3, &sSlaveConfig);
 
     HAL_NVIC_SetPriority(TIM3_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(TIM3_IRQn);
