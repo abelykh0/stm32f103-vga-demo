@@ -378,7 +378,7 @@ void Vga::InitHSync(
     HAL_NVIC_EnableIRQ(TIM2_IRQn);
 
     sConfigOC.OCMode = TIM_OCMODE_INACTIVE;
-    sConfigOC.Pulse = startDraw - 12 - 1;
+    sConfigOC.Pulse = startDraw - 60 - 1;
     HAL_TIM_OC_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2);
     __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC2);
     TIM_CCxChannelCmd(htim2.Instance, TIM_CHANNEL_2, TIM_CCx_ENABLE);

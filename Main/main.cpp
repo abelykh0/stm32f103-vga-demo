@@ -15,6 +15,7 @@
 
 static int previousDemo = -1;
 static int currentDemo = 4;
+static int32_t scanCode = 0;
 
 void showSinclairScreenshot(const char *screenshot);
 
@@ -45,7 +46,11 @@ void loop()
 {
     bool demoInit;
 
-    int32_t scanCode = Ps2_GetScancode();
+    if (scanCode == 0)
+    {
+    	scanCode = Ps2_GetScancode();
+    }
+
     if (scanCode == 0)
     {
     	return;
@@ -78,6 +83,7 @@ void loop()
             Vga::hideCursor();
             showSinclairScreenshot(bubblebobble);
         }
+    	scanCode = 0;
         break;
     case 2:
         if (demoInit)
@@ -95,44 +101,43 @@ void loop()
         }
         else
         {
-        	/*
-            if (len == 1)
+        	char character = Ps2_ConvertScancode(scanCode);
+            if (character != 0)
             {
-                Vga::print(buffer[0], 0x3F10);
+                Vga::print(character, 0xFF40);
             }
-
-            if (len == 3 && buffer[0] == '\e' && buffer[1] == '[')
+            else
             {
-                switch (buffer[2])
-                {
-                case 'D':
-                    if (Vga::cursor_x > 0)
-                    {
-                        Vga::setCursorPosition(Vga::cursor_x - 1, Vga::cursor_y);
-                    }
-                    break;
-                case 'C':
-                    if (Vga::cursor_x < Vga::hres() - 1)
-                    {
-                        Vga::setCursorPosition(Vga::cursor_x + 1, Vga::cursor_y);
-                    }
-                    break;
-                case 'A':
-                    if (Vga::cursor_y > 0)
-                    {
-                        Vga::setCursorPosition(Vga::cursor_x, Vga::cursor_y - 1);
-                    }
-                    break;
-                case 'B':
-                    if (Vga::cursor_y < Vga::vres() - 1)
-                    {
-                        Vga::setCursorPosition(Vga::cursor_x, Vga::cursor_y + 1);
-                    }
-                    break;
-                }
+				switch (scanCode)
+				{
+				case KEY_LEFTARROW:
+					if (Vga::cursor_x > 0)
+					{
+						Vga::setCursorPosition(Vga::cursor_x - 1, Vga::cursor_y);
+					}
+					break;
+				case KEY_RIGHTARROW:
+					if (Vga::cursor_x < Vga::hres() - 1)
+					{
+						Vga::setCursorPosition(Vga::cursor_x + 1, Vga::cursor_y);
+					}
+					break;
+				case KEY_UPARROW:
+					if (Vga::cursor_y > 0)
+					{
+						Vga::setCursorPosition(Vga::cursor_x, Vga::cursor_y - 1);
+					}
+					break;
+				case KEY_DOWNARROW:
+					if (Vga::cursor_y < Vga::vres() - 1)
+					{
+						Vga::setCursorPosition(Vga::cursor_x, Vga::cursor_y + 1);
+					}
+					break;
+				}
             }
-            */
         }
+    	scanCode = 0;
         break;
     case 3:
         if (demoInit)
@@ -144,6 +149,7 @@ void loop()
         {
             VgaDemo::DemoLoop();
         }
+    	scanCode = 0;
         break;
     case 4:
         if (demoInit)
@@ -152,10 +158,11 @@ void loop()
             Vga::clear_screen(0x3000);
 
             GameInit();
+        	scanCode = 0;
         }
         else
         {
-            GameUpdate();
+        	scanCode = GameUpdate();
         }
         break;
     }

@@ -4,6 +4,7 @@
 #include "startup.h"
 #include "vga.h"
 #include "gamefont4x4.h"
+#include "Keyboard/ps2Keyboard.h"
 
 #define LABEL_COLOR 0xFF00
 #define SCORE_COLOR 0x3300
@@ -121,50 +122,37 @@ void GameInit()
 	Do_New();
 }
 
-void GameUpdate()
+int32_t GameUpdate()
 {
 	Animate();
     Vga::delay(STEP_TIME);
 
-    char buffer[32];
-    uint8_t len = GetUsbBuffer(buffer, 32);
-
-    if (len == 1)
+    int32_t scanCode = Ps2_GetScancode();
+    switch (scanCode)
     {
-        switch (buffer[0])
-        {
-        case '\r':
-	 		//game->addEvent(&Event::SELECT);
-            break;
-        case ' ': // STOP
-	 		gMyRunner.dx = 0;
-	 		gMyRunner.dy = 0;
-            break;
-        }
+    case KEY_SPACEBAR: // STOP
+ 		gMyRunner.dx = 0;
+ 		gMyRunner.dy = 0;
+        break;
+    case KEY_LEFTARROW:
+ 		gMyRunner.dx = -RATIO;
+ 		gMyRunner.dy = 0;
+        break;
+    case KEY_RIGHTARROW:
+ 		gMyRunner.dx = RATIO;
+ 		gMyRunner.dy = 0;
+        break;
+    case KEY_UPARROW:
+ 		gMyRunner.dy = -RATIO;
+ 		gMyRunner.dx = 0;
+        break;
+    case KEY_DOWNARROW:
+ 		gMyRunner.dy = RATIO;
+ 		gMyRunner.dx = 0;
+        break;
     }
 
-    if (len == 3 && buffer[0] == '\e' && buffer[1] == '[')
-    {
-        switch (buffer[2])
-        {
-        case 'D': // LEFT
-	 		gMyRunner.dx = -RATIO;
-	 		gMyRunner.dy = 0;
-            break;
-        case 'C': // RIGHT
-	 		gMyRunner.dx = RATIO;
-	 		gMyRunner.dy = 0;
-            break;
-        case 'A': // DOWN
-	 		gMyRunner.dy = -RATIO;
-	 		gMyRunner.dx = 0;
-            break;
-        case 'B': // UP
-	 		gMyRunner.dy = RATIO;
-	 		gMyRunner.dx = 0;
-            break;
-        }
-    }
+    return scanCode;
 }
 
 void Quit()
@@ -227,26 +215,4 @@ void DisplayHighScore()
 
 void ExitXonix(int status)
 {
-}
-
-uint8_t GetUsbBuffer(char *buffer, uint8_t maxLength)
-{
-    USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData;
-    if (hcdc == nullptr)
-    {
-    	return 0;
-    }
-
-    uint32_t len = hcdc->RxLength;
-    if (len > 0)
-    {
-        if (len > maxLength)
-        {
-            len = maxLength;
-        }
-
-        memcpy(buffer, hcdc->RxBuffer, len);
-    }
-
-    return (uint8_t)len;
 }

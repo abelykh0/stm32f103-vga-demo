@@ -11,7 +11,7 @@ extern "C" {
 #define STEP_TIME           50		/* Schrittweite in ms */
 
 void GameInit();
-void GameUpdate();
+int32_t GameUpdate();
 
 //void GlobalProtoHandler(Widget, XEvent *, String *, Cardinal *);
 //void Continue();
