@@ -33,14 +33,6 @@ void Vga::InitVga(Timing timing)
 {
     GPIO_InitTypeDef gpioInit;
 
-    // Set PA0..PA5 to OUTPUT with high speed
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    gpioInit.Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5;
-    gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
-    gpioInit.Pull = GPIO_PULLUP;
-    gpioInit.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(GPIOA, &gpioInit);
-
     // HSync on PB0 and VSync on PB6
     __HAL_RCC_GPIOB_CLK_ENABLE();
     gpioInit.Pin = GPIO_PIN_0 | GPIO_PIN_6;
@@ -49,7 +41,14 @@ void Vga::InitVga(Timing timing)
     gpioInit.Speed = GPIO_SPEED_FREQ_HIGH;
     HAL_GPIO_Init(GPIOB, &gpioInit);
 
-    GPIO_ODR = (uint8_t*)&GPIOA->ODR;
+    // Set PB8,PB9,PB12..PB15 to OUTPUT with high speed
+    gpioInit.Pin = GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
+    gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
+    gpioInit.Pull = GPIO_PULLUP;
+    gpioInit.Speed = GPIO_SPEED_FREQ_HIGH;
+    HAL_GPIO_Init(GPIOB, &gpioInit);
+
+    GPIO_ODR = (uint8_t*)(GPIOB_BASE + 13);
 
     double factor = HAL_RCC_GetHCLKFreq() / 1000000.0 / timing.pixel_frequency_mhz;
     int wholeLine = factor * timing.line_pixels;
@@ -115,6 +114,11 @@ volatile uint8_t* Vga::GetBitmapAddress(uint8_t vline, uint8_t character)
     return Vga::GetBitmapAddress(vline) + character;
 }
 
+uint16_t ConvertColor(uint16_t color)
+{
+	return (color & 0x0303) | ((color << 2) & 0xF0F0);
+}
+
 uint16_t Vga::ConvertSinclairColor(uint8_t sinclairColors)
 {
     // Sinclair: Flash-Bright-PaperG-PaperR-PaperB-InkG-InkR-InkB
@@ -140,7 +144,7 @@ uint16_t Vga::ConvertSinclairColor(uint8_t sinclairColors)
         paper |= (paper << 1);
     }
 
-    return ink | paper;
+    return ConvertColor(ink | paper);
 }
 
 void Vga::clear_screen(uint16_t color)

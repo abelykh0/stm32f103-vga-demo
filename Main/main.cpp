@@ -13,7 +13,7 @@
 #include "game/Platform.h"
 
 static int previousDemo = -1;
-static int currentDemo = 3;
+static int currentDemo = 1;
 
 void showSinclairScreenshot(const char *screenshot);
 void ClearUsbBuffer();
