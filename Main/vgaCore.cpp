@@ -53,7 +53,7 @@ void Vga::InitVga(Timing timing)
     double factor = HAL_RCC_GetHCLKFreq() / 1000000.0 / timing.pixel_frequency_mhz;
     int wholeLine = factor * timing.line_pixels;
     int syncPulse = factor * timing.sync_pixels;
-    int startDraw = factor * (timing.sync_pixels + timing.back_porch_pixels) - 130;
+    int startDraw = factor * (timing.sync_pixels + timing.back_porch_pixels);
 
     InitHSync(timing.hsync_polarity, wholeLine, syncPulse, startDraw);
     InitVSync(timing.vsync_polarity, timing.video_end_line,
@@ -253,8 +253,6 @@ __irq void TIM3_IRQHandler()
 
         if (vflag)
         {
-            __disable_irq();
-
             vgaDraw(Vga::GetBitmapAddress(vline), &Vga::VideoMemoryColors[vline / 8 * HSIZE_CHARS], GPIO_ODR);
 
             vdraw++;
@@ -267,8 +265,6 @@ __irq void TIM3_IRQHandler()
                     vdraw = vline = vflag = 0;
                 }
             }
-
-            __enable_irq();
         }
     }
     else
