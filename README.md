@@ -48,3 +48,7 @@ My idea of “fun” maybe odd, but here it is. This is a demo that displays a c
 | Breadboard | 1
 | Jumper wires | 18
 | ST-Link v2 or clone | 1
+
+## Software
+
+[System Workbench for STM32](https://www.st.com/en/development-tools/sw4stm32.html/)
