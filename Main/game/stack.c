@@ -35,7 +35,7 @@
 #include "xonix.h"
 #include "stack.h"
 
-#define INIT_SIZE (32)
+#define INIT_SIZE (128)
 
 /* ------------------------------------------------------------------------ */
 /* InitMyPoints legt einen Speicherbereich mit der gewuenschten Groesse an	*/
