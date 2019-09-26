@@ -223,23 +223,13 @@ void Vga::delay_frame()
 //*****************************************************************************
 __irq void TIM2_IRQHandler()
 {
-    if (__HAL_TIM_GET_FLAG(&htim2, TIM_FLAG_CC2) != RESET && __HAL_TIM_GET_IT_SOURCE(&htim2, TIM_FLAG_CC2) != RESET)
-    {
-        __HAL_TIM_CLEAR_IT(&htim2, TIM_FLAG_CC2);
+	__HAL_TIM_CLEAR_IT(&htim2, TIM_FLAG_CC2);
 
-        if (vflag)
-        {
-            // Wait for interrupt
-            __asm__ volatile("wfi \n\t" ::
-                                 :);
-
-            //DoDraw();
-        }
-    }
-    else
-    {
-        HAL_TIM_IRQHandler(&htim2);
-    }
+	if (vflag)
+	{
+		// Wait for interrupt
+		__asm__ volatile("wfi \n\t" :::);
+	}
 }
 
 //*****************************************************************************
@@ -247,30 +237,23 @@ __irq void TIM2_IRQHandler()
 //*****************************************************************************
 __irq void TIM3_IRQHandler()
 {
-    if (__HAL_TIM_GET_FLAG(&htim3, TIM_FLAG_CC2) != RESET && __HAL_TIM_GET_IT_SOURCE(&htim3, TIM_FLAG_CC2) != RESET)
-    {
-        __HAL_TIM_CLEAR_IT(&htim3, TIM_FLAG_CC2);
+	__HAL_TIM_CLEAR_IT(&htim3, TIM_FLAG_CC2);
 
-        if (vflag)
-        {
-            vgaDraw(Vga::GetBitmapAddress(vline), &Vga::VideoMemoryColors[vline / 8 * HSIZE_CHARS], GPIO_ODR);
+	if (vflag)
+	{
+		vgaDraw(Vga::GetBitmapAddress(vline), &Vga::VideoMemoryColors[vline / 8 * HSIZE_CHARS], GPIO_ODR);
 
-            vdraw++;
-            if (vdraw == 2)
-            {
-                vdraw = 0;
-                vline++;
-                if (vline == VSIZE_PIXELS)
-                {
-                    vdraw = vline = vflag = 0;
-                }
-            }
-        }
-    }
-    else
-    {
-        HAL_TIM_IRQHandler(&htim3);
-    }
+		vdraw++;
+		if (vdraw == 2)
+		{
+			vdraw = 0;
+			vline++;
+			if (vline == VSIZE_PIXELS)
+			{
+				vdraw = vline = vflag = 0;
+			}
+		}
+	}
 
     // Triggers PendSV interrupt
     SCB->ICSR = SCB->ICSR | SCB_ICSR_PENDSVSET_Msk;
@@ -281,17 +264,10 @@ __irq void TIM3_IRQHandler()
 //*****************************************************************************
 __irq void TIM4_IRQHandler()
 {
-    if (__HAL_TIM_GET_FLAG(&htim4, TIM_FLAG_CC4) != RESET && __HAL_TIM_GET_IT_SOURCE(&htim4, TIM_FLAG_CC4) != RESET)
-    {
-        __HAL_TIM_CLEAR_IT(&htim4, TIM_FLAG_CC4);
+	__HAL_TIM_CLEAR_IT(&htim4, TIM_FLAG_CC4);
 
-        vflag = 1;
-        vline = 0;
-    }
-    else
-    {
-        HAL_TIM_IRQHandler(&htim4);
-    }
+	vflag = 1;
+	vline = 0;
 }
 
 void Vga::InitVSync(
@@ -374,7 +350,7 @@ void Vga::InitHSync(
     HAL_NVIC_EnableIRQ(TIM2_IRQn);
 
     sConfigOC.OCMode = TIM_OCMODE_INACTIVE;
-    sConfigOC.Pulse = startDraw - 60 - 1;
+    sConfigOC.Pulse = startDraw - 30 - 1;
     HAL_TIM_OC_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2);
     __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC2);
     TIM_CCxChannelCmd(htim2.Instance, TIM_CHANNEL_2, TIM_CCx_ENABLE);
