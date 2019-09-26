@@ -109,6 +109,8 @@ void VgaDemo::printcube()
     }
 
     draw_cube(PIXEL_SET);
+    Vga::delay(5);
+    Vga::delay_frame();
 }
 
 void VgaDemo::zrotate(float q)

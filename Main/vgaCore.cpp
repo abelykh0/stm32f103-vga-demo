@@ -190,15 +190,14 @@ unsigned long Vga::millis()
     }
 
     /* CNT is incremented one RTCCLK tick after the DIV counter
-    * gets reset to 32767, so to correct for that increment 
+    * gets reset to 62500, so to correct for that increment
     * the seconds count if DIV just got reset */
     uint32_t sec = ((uint32_t)cnth << 16 | (uint32_t)cntl);
-    if (divl == 32767)
+    if (divl == 62500)
     {
         sec++;
     }
-
-    return sec * 1000 + (32767 - (uint32_t)divl) / 32.768;
+    return sec * 1000 + (62500 - (uint32_t)divl) / 62.500;
 }
 
 void Vga::delay(uint32_t x)
