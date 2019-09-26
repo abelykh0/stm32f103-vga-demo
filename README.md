@@ -1,5 +1,5 @@
 # VGA-demo-on-bluepill
-VGA demo on bluepill (using STM32F103 microcontroller)
+VGA demo on a STM32F103 board
 
 ## What it can do
 There are 4 demos:
@@ -15,7 +15,7 @@ alt="VGA Demo on Bluepill" width="480" height="360" border="10" /></a>
 Video
 
 ## Introduction
-My idea of “fun” maybe odd, but here it is. This is a demo that displays a color VGA video with resolution of 256x192 and 64 colors without any specialized video hardware on a tiny STM32F103 board that can run only up to 72 MHz and has only 20 KB of RAM.
+My idea of “fun” maybe odd, but here it is. This is a demo that displays a color VGA video with resolution of 256x192 and 64 colors without any specialized video hardware on a tiny STM32F103 microcontroller that has only 20 KB of RAM with CPU running at 72 MHz.
 
 ## How to connect wires
 
@@ -48,3 +48,7 @@ My idea of “fun” maybe odd, but here it is. This is a demo that displays a c
 | Breadboard | 1
 | Jumper wires | 18
 | ST-Link v2 or clone | 1
+
+## Software
+
+[System Workbench for STM32](https://www.st.com/en/development-tools/sw4stm32.html/)
