@@ -10,7 +10,7 @@ Timing const timing_640x480_60hz =
         .line_pixels = 800,
         .sync_pixels = 96,
         .back_porch_pixels = 48,
-        .video_lead = 20,
+        .video_lead = 10,
         .video_pixels = 640,
         .hsync_polarity = Timing::Polarity::positive,
 
